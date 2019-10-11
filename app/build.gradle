@@ -17,6 +17,16 @@ def takeVersionName = { ->
     return StrVersion
 }
 
+def takeVersionCode = { ->
+    def CodeNumber = takeVersionName().split('\\.')
+    def major = CodeNumber[0] as Integer
+    def minor = CodeNumber[1] as Integer
+    def patch = 0
+    if(CodeNumber.size() == 3)
+        patch = CodeNumber[2] as Integer
+    return (major * 1000000 + minor * 100000 +  patch + 55 * 1000000)
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -24,7 +34,7 @@ android {
         applicationId "com.example.myproject"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 1
+        versionCode takeVersionCode()
         versionName takeVersionName()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
